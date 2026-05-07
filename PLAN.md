@@ -55,7 +55,7 @@ ACKs reflect INT bytes verbatim; the data plane does NOT add INT to ACKs. The re
 - 10 Mbps × ~5 ms baseRTT → BDP ≈ 4–5 packets.
 - `W_init = 8 packets`, `η = 0.95`, `W_AI = 1 pkt/RTT`, `MIN_W = 1`, `MAX_W = 64`.
 - For each ACK: per-hop `txRate_i = ΔB_i·8 / Δt_i`, `u_i = qdepth_bytes / B_i + txRate_i / link_bps_i`. Then `U = max_i u_i`, `U_smoothed = (1-τ/T)·U_smoothed + (τ/T)·U` with `τ/T = 0.2`.
-- Update gate: per-RTT, ack-clocked (when `cum_acked ≥ last_update_seq + W`). Snapshot `W_ref` and `incarnation` into each sent packet to avoid double-MD inside one congestion epoch.
+- Update gate: per-RTT, ack-clocked (when `cum_acked ≥ last_update_seq + W`). `W_ref` and `incarnation` are **sender-side bookkeeping only — not on the wire**: keep a per-(seq → W_ref, incarnation) map indexed at send time and looked up on ACK so the controller doesn't apply MD twice within the same congestion epoch.
 - Window: `W_new = W_ref / (U_smoothed/η) + W_AI`.
 
 ### DCTCP sender controller (BMv2-scaled)
