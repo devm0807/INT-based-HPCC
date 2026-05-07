@@ -1,0 +1,44 @@
+# Daily-driver dev container for the INT-CC project.
+#
+# Usage:
+#   docker compose -f docker/docker-compose.yml build
+#   docker compose -f docker/docker-compose.yml up -d
+#   docker compose -f docker/docker-compose.yml exec p4 bash
+#
+# (or just use the Makefile targets: `make env-build`, `make env-up`, ...)
+
+services:
+  p4:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    image: int-cc/p4-dev:latest
+    container_name: int-cc-p4
+    # The Dockerfile's `FROM --platform=linux/amd64` pins the build platform,
+    # so on Apple Silicon Docker Desktop picks Rosetta automatically. We
+    # deliberately do NOT set `platform:` here — compose's strict matching
+    # against locally-built multi-arch manifests rejects the image.
+    # Mininet needs to manipulate network namespaces and veths.
+    privileged: true
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+      - SYS_ADMIN
+    # Mininet writes to /sys, expects a writable /tmp, etc.
+    tmpfs:
+      - /run
+      - /run/lock
+    # Mount the project root at /workspace so edits on the host are
+    # immediately visible inside the container.
+    volumes:
+      - ..:/workspace
+      # Keep apt and pip caches off the host so rebuilds are fast.
+      - p4-apt-cache:/var/cache/apt
+    working_dir: /workspace
+    # Keep the container alive so we can `exec` into it repeatedly.
+    command: ["sleep", "infinity"]
+    stdin_open: true
+    tty: true
+
+volumes:
+  p4-apt-cache:
