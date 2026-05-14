@@ -46,7 +46,7 @@ ACKs reflect INT bytes verbatim; the data plane does NOT add INT to ACKs. The re
 - `receiver/reflector.py` — single binary used by both algorithms. Copies INT bytes verbatim if present, echoes ECN bit if present, returns small fixed ACK payload (seq + recv_ts).
 - `controller/load_tables.py` — P4Runtime client; loads forwarding table, `link_bps` per port, `K` per port (DCTCP only).
 - `controller/snapshot_queue.py` — background thread reading a `qdepth_history` register every 10 ms via thrift, for ground-truth queue plots.
-- `mininet/topo_dumbbell.py`, `mininet/p4switch.py` — two-switch dumbbell, BMv2 launcher.
+- `topo/dumbbell.py`, `topo/p4switch.py` — two-switch dumbbell, BMv2 launcher.
 - `experiments/run_experiment.py` + `experiments/configs/*.yaml` — one-command experiment driver.
 - `analysis/parse_logs.py`, `analysis/metrics.py`, `analysis/plot.py` — throughput, queue depth, FCT, Jain fairness, convergence.
 
@@ -133,7 +133,7 @@ Parallelism: A and B work independently weeks 1–3 once the INT/ACK wire format
 5. `sender/hpcc_sender.py` — U computation, EWMA, per-RTT update.
 6. `sender/dctcp_sender.py` — α-EWMA, AIMD-over-UDP+ACK.
 7. `receiver/reflector.py` — INT-opaque echo + ECN echo.
-8. `mininet/topo_dumbbell.py` — two-switch dumbbell, link rates, buffer sizing.
+8. `topo/dumbbell.py` — two-switch dumbbell, link rates, buffer sizing.
 9. `controller/load_tables.py` — P4Runtime table population.
 10. `experiments/run_experiment.py` — orchestration entrypoint.
 
@@ -148,7 +148,7 @@ project/
 │   ├── common/{headers.p4, parsers.p4}
 │   ├── hpcc.p4
 │   └── dctcp.p4
-├── mininet/{topo_dumbbell.py, p4switch.py}
+├── topo/{dumbbell.py, p4switch.py}
 ├── sender/{hpcc_sender.py, dctcp_sender.py, pacer.py, packet_format.py}
 ├── receiver/reflector.py
 ├── controller/{load_tables.py, snapshot_queue.py}
