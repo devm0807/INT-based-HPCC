@@ -4,3 +4,8 @@ build/
 results/
 .pytest_cache/
 *.log
+
+# Extensions build + run artifacts
+extensions/csender/hpcc_sender
+extensions/bdp_sweep/hpcc_*.csv
+extensions/bdp_sweep/summary.json
