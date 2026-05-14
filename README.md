@@ -5,8 +5,11 @@ testbed, with a simplified DCTCP as the apples-to-apples baseline.
 Both algorithms run over the same UDP+ACK harness so any observed
 difference is attributable to the control loop, not the transport.
 
-See [PLAN.md](PLAN.md) for the design plan and [docs/results.md](docs/results.md)
-for the headline numbers and methodology.
+See [PLAN.md](PLAN.md) for the design plan, [docs/results.md](docs/results.md)
+for the headline numbers, [docs/discussion.md](docs/discussion.md) for the
+interpretive takeaway ("is INT favorable, and why we can't fully reproduce
+the paper"), and [docs/walkthrough.md](docs/walkthrough.md) for the
+end-to-end re-implementation guide.
 
 ## Quickstart
 
